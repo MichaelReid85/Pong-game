@@ -1,38 +1,26 @@
-import turtle
-from turtle import Turtle, Screen
+from turtle import Screen
+from paddle import Paddle
 
-paddle = Turtle()
 
 screen = Screen()
 screen.bgcolor("black")
 screen.setup(800, 600)
 screen.title("Pong - The classic arcade game!")
+screen.tracer(0)
 
-paddle.penup()
-paddle.color("black")
-paddle.speed("fastest")
-paddle.shape("square")
-paddle.shapesize(stretch_wid=5, stretch_len=1)
-paddle.setposition(350, 0)
-paddle.color("white")
-
-
-def go_up():
-    new_y = paddle.ycor() + 20
-    paddle.goto(paddle.xcor(), new_y)
-
-
-def go_down():
-    new_y = paddle.ycor() +-20
-    paddle.goto(paddle.xcor(), new_y)
+r_paddle = Paddle((350, 0))
+l_paddle = Paddle((-350, 0))
 
 
 screen.listen()
-screen.onkey(go_up, "Up")
-screen.onkey(go_down, "Down")
+screen.onkeypress(l_paddle.go_up, "w")
+screen.onkeypress(l_paddle.go_down, "s")
+screen.onkeypress(r_paddle.go_up, "Up")
+screen.onkeypress(r_paddle.go_down, "Down")
 
-
-
+game_is_on = True
+while game_is_on:
+    screen.update()
 
 
 screen.exitonclick()

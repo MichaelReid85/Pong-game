@@ -1,3 +1,4 @@
+from scoreboard import Scoreboard
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
@@ -9,11 +10,10 @@ screen.setup(800, 600)
 screen.title("Pong - The classic arcade game!")
 screen.tracer(0)
 
-
 r_paddle = Paddle((350, 0))
 l_paddle = Paddle((-350, 0))
+scoreboard = Scoreboard()
 ball = Ball()
-
 
 screen.listen()
 screen.onkeypress(l_paddle.go_up, "w")
@@ -21,10 +21,9 @@ screen.onkeypress(l_paddle.go_down, "s")
 screen.onkeypress(r_paddle.go_up, "Up")
 screen.onkeypress(r_paddle.go_down, "Down")
 
-
 game_is_on = True
 while game_is_on:
-    time.sleep(0.1)
+    time.sleep(ball.move_speed)
     screen.update()
     ball.move()
 
@@ -38,10 +37,18 @@ while game_is_on:
         # Needs to go back other way
         ball.bounce_x()
 
-    # Detect when ball misses paddle
-    if ball.xcor() > 380 or ball.xcor() < -380:
+    # Detect when ball misses right paddle
+    if ball.xcor() > 380:
         ball.miss()
         ball.move()
+        scoreboard.clear()
+        scoreboard.l_point()
 
+    # Detect when ball misses left paddle
+    if ball.xcor() < -380:
+        ball.miss()
+        ball.move()
+        scoreboard.clear()
+        scoreboard.r_point()
 
 screen.exitonclick()
